@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Switcher</title>
+  <style>
+    body {
+      margin:0;
+      display:flex;
+      flex-direction:row;
+      align-items:center;
+      justify-content:space-between;
+      height:100vh;
+      font-family:sans-serif;
+      background:#fff;
+      overflow:hidden;
+    }
+    .buttons {
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:40px;
+    flex:1;
+    place-items:center;
+    padding:20px;
+    max-width:200px;
+    margin:0 auto;
+    }
+    .buttons button {
+      width:20px;
+      height:20px;
+      cursor:pointer;
+      border:2px solid;
+      border-radius:50%;
+      transition:all 0.5s;
+      padding:0;
+      background:transparent;
+      box-sizing:border-box;
+    }
+    .buttons button.active {
+      width:35px;
+      height:35px;
+      border-width:4px;
+    }
+    .buttons button:nth-child(1) { border-color:#B8860B; }
+    .buttons button:nth-child(2) { border-color:#D4C5B9; }
+    .buttons button:nth-child(3) { border-color:#C9A499; }
+    .buttons button:nth-child(4) { border-color:#8B4513; }
+    .buttons button:nth-child(5) { border-color:#5C6270; }
+    .buttons button:nth-child(6) { border-color:#F4D998; }
+    .buttons button:nth-child(7) { border-color:#A52A2A; }
+    .buttons button:nth-child(8) { border-color:#E8D7C3; }
+    .buttons button:nth-child(9) { border-color:#8B7B6B; }
+    .buttons button:nth-child(10) { border-color:#2F2F2F; }
+    .buttons button:nth-child(11) { border-color:#000000; }
+    .buttons button:nth-child(12) { border-color:#6B5D4F; }
+    .video-holder {
+      width:100vh;
+      height:100vh;
+      position:relative;
+      flex-shrink:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .video-holder video {
+      width:100%;
+      height:100%;
+      position:absolute;
+      top:0;
+      left:0;
+      display:none;
+      object-fit:cover;
+    }
+    .video-holder video.active {
+      display:block;
+    }
+    .placeholder-circle {
+      width:60vh;
+      height:60vh;
+      border:8px solid #000;
+      border-radius:50%;
+      position:absolute;
+      z-index:10;
+    }
+    .placeholder-circle.hidden {
+      display:none;
+    }
+  </style>
+</head>
+<body>
+<div class="buttons">
+  <button data-index="0"></button>
+  <button data-index="1"></button>
+  <button data-index="2"></button>
+  <button data-index="3"></button>
+  <button data-index="4"></button>
+  <button data-index="5"></button>
+  <button data-index="6"></button>
+  <button data-index="7"></button>
+  <button data-index="8"></button>
+  <button data-index="9"></button>
+  <button data-index="10"></button>
+  <button data-index="11"></button>
+</div>
+<div class="video-holder">
+  <div class="placeholder-circle"></div>
+  <video src="DSK.mp4" loop></video>
+  <video src="YYN.mp4" loop></video>
+  <video src="PND.mp4" loop></video>
+  <video src="RSE.mp4" loop></video>
+  <video src="DRP.mp4" loop></video>
+  <video src="MML.mp4" loop></video>
+  <video src="SWS.mp4" loop></video>
+  <video src="BMP.mp4" loop></video>
+  <video src="SCR.mp4" loop></video>
+  <video src="PRS.mp4" loop></video>
+  <video src="DRK.mp4" loop></video>
+  <video src="PLS.mp4" loop></video>
+</div>
+<script>
+  const buttons = document.querySelectorAll('.buttons button');
+  const videos = document.querySelectorAll('.video-holder video');
+  const placeholder = document.querySelector('.placeholder-circle');
+  let currentTime = 0;
+  let hasStarted = false;
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const index = btn.dataset.index;
+      
+      // Hide placeholder on first click
+      if(!hasStarted) {
+        placeholder.classList.add('hidden');
+        hasStarted = true;
+      }
+      
+      // Store current playback time from the active video
+      const activeVideo = document.querySelector('.video-holder video.active');
+      if(activeVideo) {
+        currentTime = activeVideo.currentTime;
+      }
+      
+      // Switch videos
+      videos.forEach((vid, i) => {
+        vid.classList.toggle('active', i == index);
+        if(i == index){
+          vid.currentTime = currentTime;
+          vid.play();
+        } else {
+          vid.pause();
+        }
+      });
+      
+      // Highlight the active button
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
