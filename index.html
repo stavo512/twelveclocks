@@ -106,11 +106,11 @@
 
       body {
         flex-direction:column;
-        justify-content:flex-start;
       }
 
       /* keep same grid logic, just scale */
       .buttons {
+        order: 2;
         gap:24px;
         padding:16px;
       }
@@ -128,6 +128,7 @@
 
       /* video stays inline, never fullscreen */
       .video-holder {
+        order: 1;
         width:100vw;
         height:auto;
         aspect-ratio:1000 / 1334;
